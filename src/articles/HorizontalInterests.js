@@ -3,29 +3,37 @@ import * as s from './HorizontalInterests.sc';
 import useSelectInterest from "../hooks/useSelectInterest";
 import OneInterest from "../components/OneInterest";
 
-export default function HorizontalInterests( {
-    api, 
-    articlesListShouldChange } ){
-
+export default function HorizontalInterests( {api, articlesListShouldChange } ){
     const {
         allTopics,
-        isSubscribed
+        isSubscribed,
+        subscribedTopics,
+        availableTopics
     } = useSelectInterest(api);
-
-    const [isShowingOneInterest, setShowingOneInterest] = useState(false);
+    
     const [oneTopicChosen, setOneTopicChosen] = useState();
 
-
     function showOneInterest(topic){
-        setShowingOneInterest(true);
         setOneTopicChosen(topic);
+        //show all articles with the chosen topic...
     }
 
     return(
         <div>
             <s.RowOfInterests>
+                {subscribedTopics?.map((topic) => (
+                    <div key={topic.id}>
+                    <button 
+                    onClick={(e) => showOneInterest(topic.title)}
+                    type="button"
+                    className={`interests ${!isSubscribed(topic) && "unsubscribed"}`}
+                    >
+                        <span>{topic.title}</span>
+                    </button>
+                </div>
+                ))}
 
-                {allTopics?.map((topic) => (
+                {availableTopics?.map((topic) => (
                     <div key={topic.id}>
                         <button 
                         onClick={(e) => showOneInterest(topic.title)}
@@ -38,12 +46,12 @@ export default function HorizontalInterests( {
                 ))}
             </s.RowOfInterests>
 
-            {isShowingOneInterest &&(
-                <OneInterest
-                api={api}
-                chosenTopic={oneTopicChosen}
-                />
-            )}
+            <OneInterest
+            api={api}
+            chosenTopic={oneTopicChosen}
+            articlesListShouldChange={articlesListShouldChange}
+            />
+            
         </div>
     )
 }

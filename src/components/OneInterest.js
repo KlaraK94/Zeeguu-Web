@@ -1,12 +1,14 @@
-import React from "react";
-import * as s from './Search.sc';
+import React, { useState } from "react";
+import * as s from './OneInterest.sc';
 import useSelectInterest from "../hooks/useSelectInterest";
 
 export default function OneInterest( {api, chosenTopic} ){
     const {
         allTopics,
-        toggleTopicSubscription
+        toggleTopicSubscription,
+        isSubscribed
     } = useSelectInterest(api);
+
 
     return(
         <div>
@@ -14,11 +16,17 @@ export default function OneInterest( {api, chosenTopic} ){
             <h1>{chosenTopic}</h1>
             {allTopics.map((topic) => (
                 topic.title === chosenTopic ? (
-                    <p
+                    <button
                     key={topic.id}
                     onClick={(e) => toggleTopicSubscription(topic)}>
-                        + add interest
-                    </p>
+                        {isSubscribed(topic) &&(
+                            <p>- remove interest</p>
+                        )}
+                        {!isSubscribed(topic) &&(
+                            <p>+ add interest</p>
+                        )}
+                        
+                    </button>
                 ) : null
             ))}
             
