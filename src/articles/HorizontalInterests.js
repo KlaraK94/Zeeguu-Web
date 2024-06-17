@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as s from './HorizontalInterests.sc';
 import useSelectInterest from "../hooks/useSelectInterest";
 import OneInterest from "../components/OneInterest";
@@ -8,14 +8,25 @@ export default function HorizontalInterests( {api, articlesListShouldChange } ){
         allTopics,
         isSubscribed,
         subscribedTopics,
-        availableTopics
+        availableTopics,
+        toggleTopicSubscription
     } = useSelectInterest(api);
     
     const [oneTopicChosen, setOneTopicChosen] = useState();
+    const [textButton, setTextButton] = useState('');
+
+    useEffect(() => {
+        const topic = allTopics.find(t => t.title === oneTopicChosen);
+        if (topic) {
+            setTextButton(isSubscribed(topic) ? '- remove interest' : '+ add interest');
+        }
+      }, [oneTopicChosen, isSubscribed, allTopics]);
+    
 
     function showOneInterest(topic){
         setOneTopicChosen(topic);
         //show all articles with the chosen topic...
+        //articleListShouldChange();
     }
 
     return(
@@ -49,7 +60,8 @@ export default function HorizontalInterests( {api, articlesListShouldChange } ){
             <OneInterest
             api={api}
             chosenTopic={oneTopicChosen}
-            articlesListShouldChange={articlesListShouldChange}
+            toggleTopicSubscription={toggleTopicSubscription}
+            textButton={textButton}
             />
             
         </div>

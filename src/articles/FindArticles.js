@@ -189,7 +189,7 @@ export default function NewArticles() {
         articlesListShouldChange={articlesListShouldChange}
       />
 
-      {searchQuery && articleList.length > 0 &&(
+      {searchQuery &&(
         <Search
           query={searchQuery}
         />
