@@ -6,6 +6,8 @@ import Interests from "./Interests";
 import SearchField from "./SearchField";
 import * as s from "./FindArticles.sc";
 import LoadingAnimation from "../components/LoadingAnimation";
+import Search from "../components/Search";
+import HorizontalInterests from "./HorizontalInterests";
 
 import ExtensionMessage from "./ExtensionMessage";
 import LocalStorage from "../assorted/LocalStorage";
@@ -193,6 +195,18 @@ export default function NewArticles() {
         originalList={originalList}
         setArticleList={setArticleList}
       />
+
+      <HorizontalInterests
+        api={api}
+        articlesListShouldChange={articlesListShouldChange}
+      />
+
+      {searchQuery &&(
+        <Search
+          query={searchQuery}
+        />
+      )}
+
       {articleList.map((each, index) => (
         <ArticlePreview
           key={each.id}
