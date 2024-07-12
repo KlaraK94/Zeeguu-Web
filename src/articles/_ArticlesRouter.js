@@ -2,7 +2,6 @@ import FindArticles from "./FindArticles";
 import BookmarkedArticles from "./BookmarkedArticles";
 import { useEffect, useState } from "react";
 
-
 import { PrivateRoute } from "../PrivateRoute";
 import ClassroomArticles from "./ClassroomArticles";
 import TopTabs from "../components/TopTabs";
@@ -16,9 +15,9 @@ import * as s from "../components/ColumnWidth.sc";
 import LocalStorage from "../assorted/LocalStorage";
 import { Recommend } from "@mui/icons-material";
 import { set } from "date-fns";
+import OneInterest from "../components/OneInterest";
 
 export default function ArticlesRouter({ api, hasExtension, isChrome }) {
- 
   const [tabsAndLinks, setTabsAndLinks] = useState({
     [strings.homeTab]: "/articles",
     [strings.saved]: "/articles/ownTexts",
@@ -26,7 +25,7 @@ export default function ArticlesRouter({ api, hasExtension, isChrome }) {
 
   useEffect(() => {
     if (LocalStorage.isStudent()) {
-      setTabsAndLinks(prevTabsAndLinks => ({
+      setTabsAndLinks((prevTabsAndLinks) => ({
         ...prevTabsAndLinks,
         [strings.classroomTab]: "/articles/classroom",
       }));
@@ -35,9 +34,9 @@ export default function ArticlesRouter({ api, hasExtension, isChrome }) {
 
   useEffect(() => {
     api.getBookmarkedArticles((articles) => {
-      const likedArticles = articles.filter(article => article.liked);
+      const likedArticles = articles.filter((article) => article.liked);
       if (likedArticles.length >= 5) {
-        setTabsAndLinks(prevTabsAndLinks => ({
+        setTabsAndLinks((prevTabsAndLinks) => ({
           ...prevTabsAndLinks,
           [strings.forYou]: "/articles/forYou",
         }));
@@ -86,6 +85,11 @@ export default function ArticlesRouter({ api, hasExtension, isChrome }) {
           path="/articles/history"
           api={api}
           component={ReadingHistory}
+        />
+        <PrivateRoute
+          path="/articles/interest/:chosenTopic"
+          api={api}
+          component={OneInterest}
         />
       </s.NarrowColumn>
     </>

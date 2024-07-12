@@ -82,6 +82,8 @@ export default function useSelectInterest(api) {
     subscribedTopics,
     toggleTopicSubscription,
     isSubscribed,
+    unsubscribeFromTopic,
+    subscribeToTopic,
 
     subscribedSearches,
     setSubscribedSearches,
